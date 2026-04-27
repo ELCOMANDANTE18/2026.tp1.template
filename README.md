@@ -5,11 +5,11 @@
 
 ### Datos del Alumno
 
-| Campo | Respuesta |
-| :--- | :--- |
-| **Nombre** | |
-| **Apellido** | |
-| **Legajo** | |
+| Campo | Respuesta       |
+| :--- |:----------------|
+| **Nombre** | VICTOR BENJAMIN |
+| **Apellido** | GIMENEZ         |
+| **Legajo** | 61174           |
 
 > **Fecha de entrega:** 28 de Abril de 2026
 
