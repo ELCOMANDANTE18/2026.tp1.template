@@ -1,4 +1,4 @@
-package model;
+package Model;
 
 public record Ebook(String isbn,
                     String titulo,

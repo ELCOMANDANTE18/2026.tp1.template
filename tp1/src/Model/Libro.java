@@ -1,4 +1,4 @@
-package model;
+package Model;
 
 public record Libro(String isbn,
                     String titulo,

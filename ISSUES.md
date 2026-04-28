@@ -5,19 +5,19 @@ Debido a los problemas que tiene github puse los issues en un archivo markdown
 
 ### ISSUE 01: Definir Jerarquía de Recurso:
 
-    Crear la interfaz Recurso y los record para Libro y Ebook. ESTADO []
+    Crear la interfaz Recurso y los record para Libro y Ebook. ESTADO [COMPLETADO]
 
 ### ISSUE 02: Modelar Socio y Categorías
     
-    Implementar record Socio y enums para tipos de socio (Estudiante/Docente). ESTADO []
+    Implementar record Socio y enums para tipos de socio (Estudiante/Docente). ESTADO [COMPLETADO]
 
 ### ISSUE 03: Interfaz Repository Genérica
 
-    Crear Repository<T, ID> con métodos CRUD básicos usando Optional. ESTADO []
+    Crear Repository<T, ID> con métodos CRUD básicos usando Optional. ESTADO [COMPLETADO]
 
 ### ISSUE 04: Implementación InMemoryRepository 
     
-    Crear clases concretas que gestionen los datos en colecciones (List o Map). ESTADO [] 
+    Crear clases concretas que gestionen los datos en colecciones (List o Map). ESTADO [COMPLETADO] 
 
 
 # Milestone 2: Lógica de Negocio (Servicios)
