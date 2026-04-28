@@ -24,19 +24,19 @@ Debido a los problemas que tiene github puse los issues en un archivo markdown
 
 ### ISSUE 05: Servicio de Búsqueda Avanzada
 
-    Lógica para filtrar libros por ISBN, autor o categoría sin devolver null. ESTADO []
+    Lógica para filtrar libros por ISBN, autor o categoría sin devolver null. ESTADO [COMPLETADO]
 
 ### ISSUE 06: Validación de Límites de Préstamo
 
-    Lógica para verificar si un Estudiante (máx 3) o Docente (máx 5) puede retirar libros. ESTADO []
+    Lógica para verificar si un Estudiante (máx 3) o Docente (máx 5) puede retirar libros. ESTADO [COMPLETADO]
 
 ### ISSUE 07: Gestión de Transacciones
 
-    Registrar el préstamo y actualizar la disponibilidad del recurso. ESTADO []
+    Registrar el préstamo y actualizar la disponibilidad del recurso. ESTADO [COMPLETADO]
 
 ### ISSUE 08: Lógica de Devoluciones
 
-    Calcular días de retraso y liberar el ejemplar. ESTADO []
+    Calcular días de retraso y liberar el ejemplar. ESTADO [COMPLETADO]
 
 # Milestone 3: Excepciones y Punto de Entrada
 
