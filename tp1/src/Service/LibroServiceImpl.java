@@ -23,12 +23,12 @@ public class LibroServiceImpl implements LibroService {
     public Optional<Libro> buscarPorIsbn(String isbn) {
         return libroRepo.buscarPorId(isbn);
     }
-
     @Override
     public List<Libro> buscarPorCriterio(String criterio) {
         String query = criterio.toLowerCase();
         return libroRepo.buscarTodos().stream()
-                .filter(l -> l.titulo().toLowerCase().contains(query) ||
+                .filter(l -> l.isbn().toLowerCase().contains(query) || // Agregamos ISBN acá
+                        l.titulo().toLowerCase().contains(query) ||
                         l.autor().toLowerCase().contains(query) ||
                         l.categoria().toLowerCase().contains(query))
                 .collect(Collectors.toList());
