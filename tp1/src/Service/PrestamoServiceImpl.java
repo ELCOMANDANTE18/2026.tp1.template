@@ -2,17 +2,16 @@ package Service;
 
 import Model.*;
 import Repository.Repository;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.HashMap;
+import java.util.*;
 
 public class PrestamoServiceImpl implements PrestamoService {
     private final Repository<Libro, String> libroRepo;
     private final Repository<Socio, String> socioRepo;
 
-    // Simulación de base de datos de préstamos activos: DNI -> Lista de ISBNs
+    // Almacenamos quién tiene qué libro (DNI -> Lista de ISBNs)
     private final Map<String, List<String>> prestamosActivos = new HashMap<>();
+    // Almacenamos libros que ya están prestados para que no se dupliquen
+    private final Set<String> librosPrestados = new HashSet<>();
 
     public PrestamoServiceImpl(Repository<Libro, String> libroRepo, Repository<Socio, String> socioRepo) {
         this.libroRepo = libroRepo;
@@ -21,32 +20,37 @@ public class PrestamoServiceImpl implements PrestamoService {
 
     @Override
     public void realizarPrestamo(String isbn, String dni) throws Exception {
-        // 1. Buscar socio y libro usando Optional
         Socio socio = socioRepo.buscarPorId(dni)
                 .orElseThrow(() -> new Exception("Socio no encontrado"));
 
         Libro libro = libroRepo.buscarPorId(isbn)
                 .orElseThrow(() -> new Exception("Libro no encontrado"));
 
-        // 2. Validar límite según TipoSocio (Lógica del Issue #06)
-        List<String> librosDelSocio = prestamosActivos.getOrDefault(dni, new ArrayList<>());
-
-        if (librosDelSocio.size() >= socio.tipo().getLimitePrestamos()) {
-            throw new Exception("El socio " + socio.nombre() + " ha superado su límite de " +
-                    socio.tipo().getLimitePrestamos() + " libros.");
+        // 1. Verificar si el libro ya está prestado (Gestión de disponibilidad)
+        if (librosPrestados.contains(isbn)) {
+            throw new Exception("El libro '" + libro.titulo() + "' ya se encuentra prestado.");
         }
 
-        // 3. Registrar préstamo
-        librosDelSocio.add(isbn);
-        prestamosActivos.put(dni, librosDelSocio);
-        System.out.println("✅ Préstamo registrado: " + libro.titulo() + " para " + socio.nombre());
+        // 2. Validar límite del socio
+        List<String> susLibros = prestamosActivos.getOrDefault(dni, new ArrayList<>());
+        if (susLibros.size() >= socio.tipo().getLimitePrestamos()) {
+            throw new Exception(socio.nombre() + " superó el límite de " + socio.tipo().getLimitePrestamos());
+        }
+
+        // 3. TRANSACCIÓN: Registrar en ambos mapas
+        susLibros.add(isbn);
+        prestamosActivos.put(dni, susLibros);
+        librosPrestados.add(isbn); // Marcamos el libro como no disponible
+
+        System.out.println("✅ Transacción exitosa: " + socio.nombre() + " retiró " + libro.titulo());
     }
 
     @Override
     public void devolverLibro(String isbn, String dni) {
         if (prestamosActivos.containsKey(dni)) {
             prestamosActivos.get(dni).remove(isbn);
-            System.out.println("✅ Devolución exitosa del ISBN: " + isbn);
+            librosPrestados.remove(isbn); // El libro vuelve a estar disponible
+            System.out.println("✅ Transacción exitosa: Libro con ISBN " + isbn + " devuelto.");
         }
     }
 }
