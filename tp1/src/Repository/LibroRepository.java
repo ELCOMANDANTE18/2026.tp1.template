@@ -1,7 +1,6 @@
 package Repository; // Asegúrate de que coincida con la carpeta
 
-import Repository.Repository;
-import model.Libro; // Verifica que el paquete de Libro sea 'model'
+import Model.Libro; // Verifica que el paquete de Libro sea 'model'
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
