@@ -42,13 +42,13 @@ Debido a los problemas que tiene github puse los issues en un archivo markdown
 
 ### ISSUE 09: Jerarquía de BibliotecaException
 
-    Crear excepciones personalizadas como LibroNoDisponibleException. ESTADO []
+    Crear excepciones personalizadas como LibroNoDisponibleException. ESTADO [COMPLETADO]
 
 ### ISSUE 10: Orquestador Main (CLI)
 
-    Implementar el menú interactivo para el usuario final por consola. ESTADO []
+    Implementar el menú interactivo para el usuario final por consola. ESTADO [COMPLETADO]
 
 ### ISSUE 11: Inyección de Dependencias
 
-    Asegurar que los servicios reciban sus repositorios por constructor. ESTADO []
+    Asegurar que los servicios reciban sus repositorios por constructor. ESTADO [COMPLETADO]
 
