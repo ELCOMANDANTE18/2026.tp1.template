@@ -2,6 +2,8 @@ package Service;
 
 import Model.*;
 import Repository.Repository;
+import Exception.LibroNoDisponibleException;
+import Exception.LimitePrestamosExcedidoException;
 import java.util.*;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
@@ -33,13 +35,13 @@ public class PrestamoServiceImpl implements PrestamoService {
 
         // 1. Verificar si el libro ya está prestado (Gestión de disponibilidad)
         if (librosPrestados.contains(isbn)) {
-            throw new Exception("El libro '" + libro.titulo() + "' ya se encuentra prestado.");
+            throw new LibroNoDisponibleException(isbn);
         }
 
         // 2. Validar límite del socio
         List<String> susLibros = prestamosActivos.getOrDefault(dni, new ArrayList<>());
         if (susLibros.size() >= socio.tipo().getLimitePrestamos()) {
-            throw new Exception(socio.nombre() + " superó el límite de " + socio.tipo().getLimitePrestamos());
+            throw new LimitePrestamosExcedidoException(socio.nombre(), socio.tipo().getLimitePrestamos());
         }
 
         fechasVencimiento.put(isbn, LocalDate.now().plusDays(7));
