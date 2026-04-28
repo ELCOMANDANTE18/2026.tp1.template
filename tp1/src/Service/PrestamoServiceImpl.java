@@ -3,6 +3,8 @@ package Service;
 import Model.*;
 import Repository.Repository;
 import java.util.*;
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 public class PrestamoServiceImpl implements PrestamoService {
     private final Repository<Libro, String> libroRepo;
@@ -13,10 +15,13 @@ public class PrestamoServiceImpl implements PrestamoService {
     // Almacenamos libros que ya están prestados para que no se dupliquen
     private final Set<String> librosPrestados = new HashSet<>();
 
+
     public PrestamoServiceImpl(Repository<Libro, String> libroRepo, Repository<Socio, String> socioRepo) {
         this.libroRepo = libroRepo;
         this.socioRepo = socioRepo;
     }
+
+    private final Map<String, LocalDate> fechasVencimiento = new HashMap<>();
 
     @Override
     public void realizarPrestamo(String isbn, String dni) throws Exception {
@@ -37,6 +42,8 @@ public class PrestamoServiceImpl implements PrestamoService {
             throw new Exception(socio.nombre() + " superó el límite de " + socio.tipo().getLimitePrestamos());
         }
 
+        fechasVencimiento.put(isbn, LocalDate.now().plusDays(7));
+
         // 3. TRANSACCIÓN: Registrar en ambos mapas
         susLibros.add(isbn);
         prestamosActivos.put(dni, susLibros);
@@ -47,10 +54,22 @@ public class PrestamoServiceImpl implements PrestamoService {
 
     @Override
     public void devolverLibro(String isbn, String dni) {
-        if (prestamosActivos.containsKey(dni)) {
+        if (prestamosActivos.containsKey(dni) && prestamosActivos.get(dni).contains(isbn)) {
+            LocalDate fechaVencimiento = fechasVencimiento.get(isbn);
+            LocalDate fechaHoy = LocalDate.now();
+
+            // Cálculo de días de retraso usando ChronoUnit
+            long diasRetraso = ChronoUnit.DAYS.between(fechaVencimiento, fechaHoy);
+
+            if (diasRetraso > 0) {
+                System.out.println("⚠️ ATENCIÓN: Devolución con " + diasRetraso + " días de retraso.");
+            } else {
+                System.out.println("✅ Devolución a tiempo. ¡Gracias!");
+            }
+
+            // Limpieza de registros
             prestamosActivos.get(dni).remove(isbn);
-            librosPrestados.remove(isbn); // El libro vuelve a estar disponible
-            System.out.println("✅ Transacción exitosa: Libro con ISBN " + isbn + " devuelto.");
-        }
+            librosPrestados.remove(isbn);
+            fechasVencimiento.remove(isbn);    }
     }
 }
