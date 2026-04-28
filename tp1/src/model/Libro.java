@@ -1,6 +1,6 @@
 package model;
 
-public record LIbro(String isbn,
+public record Libro(String isbn,
                     String titulo,
                     String autor,
                     int anio,
